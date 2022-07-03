@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+
+ <title>Espiral de Círculos</title>
+ 
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+</head>
+
+<style>
+.slider{
+width:500px;
+}
+</style>
+
+
+<body>
+
+ <h1><a href="https://ideiasesquecidas.com"> <img src=	"https://ideiasesquecidas.files.wordpress.com/2020/03/forgottenlogo.png" width="90" height = "50"></a>Espiral Interativa de Círculos</h1>
+
+N. círculos
+<div class="slidecontainer1" onchange= "Desenhar()">
+  <input type="range" min="5" max="20" value="10" class="slider" id="rangeNum">
+</div>
+
+Ângulo
+<div class="slidecontainer" onchange= "Desenhar()">
+  <input type="range" min="-45" max="45" value="30" class="slider" id="rangeAngle">
+</div>
+
+
+
+</Body>   
+</Html>  
+
+<script type = "text/javascript">
+    var svg = d3.select("body")
+        .append("svg")
+        .attr("width", 1520)
+        .attr("height", 800);
+   
+	Desenhar();
+
+	function Desenhar()
+	{
+	svg.selectAll("*").remove();
+
+	//---------------------------------------------------------------
+	var i;
+	var j;
+	var cx =[];
+	var cy=[];
+	var r0 =[];
+	var cor =[];
+	
+	var num = d3.select("#rangeNum").property("value"); //Número de círculos
+	var angle = d3.select("#rangeAngle").property("value"); //angulo final
+	var camadas = 8;
+	var raio = 15;
+	
+
+	//Plota cada camada
+	for (i=0; i<camadas;i++)
+		{
+		for (j=0; j<num; j++)
+			{
+				cx.push(400 + (raio*num/3.1416 + i*(raio*2))* Math.sin(2*3.1416*(j/num +i*angle/camadas/360)));
+				cy.push(400 + (raio*num/3.1416 + i*(raio*2))* Math.cos(2*3.1416*(j/num +i*angle/camadas/360)))	
+				r0.push(raio - .8*i);
+				cor.push("goldenrod");
+			}
+		}
+		
+	svg.selectAll("circle")
+			.data(cx)
+			.enter()
+			.append("circle")
+		  .attr("cx", function(d,i){return cx[i]})
+		  .attr("cy", function(d,i){return cy[i]})
+		  .attr("r", function(d,i){return r0[i]})
+		  .attr("stroke", "black")
+		  .attr("stroke-width", 1.5)
+		  .attr("fill", function(d,i){return cor[i]})
+	}
+
+
+	
+  </script>
+</body>
+</html>
